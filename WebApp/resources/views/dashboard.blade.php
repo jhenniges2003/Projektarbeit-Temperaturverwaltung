@@ -1,0 +1,104 @@
+<x-layouts.app :title="__('Dashboard')">
+    <div class="mb-6">
+        <h1>Dashboard</h1>
+    </div>
+    <div class="flex h-full w-full flex-1 flex-col gap-4 rounded-xl">
+        <div class="grid auto-rows-min gap-4 md:grid-cols-2">
+            <div class="relative aspect-video rounded-xl border border-neutral-200 dark:border-neutral-700">
+                <h2>Sensorübersicht</h2>
+                <div class="mx-5">
+                    <!-- Foreach durchgehen Sensoren-->
+                    <ul>
+                        <li class="flex justify-between border border-b-0 rounded-t-xl border-neutral-200 dark:border-neutral-700 p-2">
+                            <div>
+                                <div>
+                                    Sonsor 1
+                                </div>
+                                <div>Seververschrank:</div>
+                            </div>
+                            <div>
+                                <div>Wert: 23°C</div>
+                                <div>Letzte Aktualisierung: 10min</div>
+                            </div>
+                        </li>
+                        <li class="flex justify-between border border-b-0 border-neutral-200 dark:border-neutral-700 p-2">
+                            <div>
+                                <div>
+                                    Sonsor 2
+                                </div>
+                                <div>Seververschrank:</div>
+                            </div>
+                            <div>
+                                <div>Wert: 23°C</div>
+                                <div>Letzte Aktualisierung: 10min</div>
+                            </div>
+                        </li>
+                        <li class="flex justify-between border rounded-b-xl border-neutral-200 dark:border-neutral-700 p-2">
+                            <div>
+                                <div>
+                                    Sonsor 1
+                                </div>
+                                <div>Seververschrank:</div>
+                            </div>
+                            <div>
+                                <div>Wert: 23°C</div>
+                                <div>Letzte Aktualisierung: 10min</div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="relative aspect-video overflow-hidden">
+                <div class="rounded-xl border border-neutral-200 dark:border-neutral-700 mb-4">
+                    <h2>kritische Sensoren</h2>
+                    <div class="mx-5 mb-5">
+                        <!-- Foreach durchgehen kritische Sensoren -> Max Temp. Dynamisch-->
+                        <ul>
+                            <li class="flex justify-between border border-b-0 border-color-kritisch rounded-t-xl p-2">
+                                <div>
+                                    <div>
+                                        Sonsor 1
+                                    </div>
+                                    <div>Seververschrank:</div>
+                                </div>
+                                <div>
+                                    <div>Wert: 23°C</div>
+                                    <div>Letzte Aktualisierung: 10min</div>
+                                </div>
+                            </li>
+                            <li class="flex justify-between border border-b-0 border-color-kritisch p-2">
+                                <div>
+                                    <div>
+                                        Sonsor 2
+                                    </div>
+                                    <div>Seververschrank:</div>
+                                </div>
+                                <div>
+                                    <div>Wert: 23°C</div>
+                                    <div>Letzte Aktualisierung: 10min</div>
+                                </div>
+                            </li>
+                            <li class="flex justify-between border rounded-b-xl border-color-kritisch p-2">
+                                <div>
+                                    <div>
+                                        Sonsor 1
+                                    </div>
+                                    <div>Seververschrank:</div>
+                                </div>
+                                <div>
+                                    <div>Wert: 23°C</div>
+                                    <div>Letzte Aktualisierung: 10min</div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="rounded-xl border border-neutral-200 dark:border-neutral-700">
+                    <h2>Log-Tabelle</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</x-layouts.app>
