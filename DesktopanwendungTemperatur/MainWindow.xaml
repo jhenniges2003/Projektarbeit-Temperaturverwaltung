@@ -1,0 +1,394 @@
+﻿<Window
+    x:Class="DesktopanwendungTemperatur.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:DesktopanwendungTemperatur"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="MainWindow"
+    Width="1000"
+    Height="700"
+    Style="{StaticResource MaterialDesignWindow}"
+    mc:Ignorable="d">
+    <Window.DataContext>
+        <local:MainWindowViewModel />
+    </Window.DataContext>
+    <Grid Margin="15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock
+                Grid.Column="0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                FontSize="13"
+                Style="{StaticResource MaterialDesignBody1TextBlock}"
+                Text="Eingeloggt als:" />
+            <Grid Grid.Column="1" HorizontalAlignment="Right">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Button
+                    Grid.Column="0"
+                    Margin="0,0,5,0"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Content="Speichern"
+                    FontSize="12"
+                    FontWeight="Normal"
+                    Style="{StaticResource MaterialDesignRaisedButton}" />
+                <Button
+                    Grid.Column="1"
+                    Margin="5,0,0,0"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Content="Ausloggen"
+                    FontSize="12"
+                    FontWeight="Normal"
+                    Style="{StaticResource MaterialDesignRaisedButton}" />
+            </Grid>
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <materialDesign:Card
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                Margin="0,10,5,0"
+                BorderBrush="{DynamicResource MaterialDesignOutline}"
+                BorderThickness="1">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <GroupBox
+                        Grid.Row="0"
+                        Margin="10,10,10,5"
+                        FontSize="12"
+                        Header="Nutzerverwaltung"
+                        Style="{StaticResource MaterialDesignGroupBox}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid Grid.Column="0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <Grid Grid.Row="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <Button
+                                        Grid.Column="0"
+                                        Height="25"
+                                        Margin="0,0,10,0"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Top"
+                                        Content="Nutzer löschen"
+                                        FontSize="10"
+                                        FontWeight="Normal"
+                                        Style="{StaticResource MaterialDesignRaisedButton}" />
+                                    <Button
+                                        Grid.Column="1"
+                                        Height="25"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Top"
+                                        Content="Nutzer hinzufügen"
+                                        FontSize="10"
+                                        FontWeight="Normal"
+                                        Style="{StaticResource MaterialDesignRaisedButton}" />
+                                </Grid>
+                                <DataGrid
+                                    Name="UserGrid"
+                                    Grid.Row="1"
+                                    Margin="0,10,0,0"
+                                    AutoGenerateColumns="False"
+                                    IsReadOnly="True"
+                                    ItemsSource="{Binding Users}"
+                                    SelectedItem="{Binding SelectedUser, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    Style="{StaticResource MaterialDesignDataGrid}">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Binding="{Binding UserId}" Header="ID" />
+                                        <DataGridTextColumn Binding="{Binding UserName}" Header="Name" />
+                                    </DataGrid.Columns>
+                                </DataGrid>
+
+                            </Grid>
+                            <StackPanel Grid.Column="1" Orientation="Vertical">
+                                <GroupBox
+                                    Height="Auto"
+                                    Margin="10,0,0,0"
+                                    FontSize="11"
+                                    Header="Nutzerdetailansicht">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <!--  Zeile 0  -->
+                                        <TextBlock
+                                            Grid.Row="0"
+                                            Grid.Column="0"
+                                            HorizontalAlignment="Left"
+                                            VerticalAlignment="Center"
+                                            Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                                            Text="Name:" />
+                                        <TextBox
+                                            Grid.Row="0"
+                                            Grid.Column="1"
+                                            Margin="10,5,0,5"
+                                            HorizontalAlignment="Stretch"
+                                            Style="{StaticResource MaterialDesignTextBoxBase}"
+                                            Text="{Binding SelectedUser.UserName}" />
+                                        <!--  Zeile 1  -->
+                                        <TextBlock
+                                            Grid.Row="1"
+                                            Grid.Column="0"
+                                            HorizontalAlignment="Left"
+                                            VerticalAlignment="Center"
+                                            Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                                            Text="Anmeldename:" />
+                                        <TextBox
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            Margin="10,5,0,5"
+                                            HorizontalAlignment="Stretch"
+                                            Style="{StaticResource MaterialDesignTextBoxBase}"
+                                            Text="{Binding SelectedUser.LogInName}" />
+                                        <!--  Zeile 2  -->
+                                        <TextBlock
+                                            Grid.Row="2"
+                                            Grid.Column="0"
+                                            HorizontalAlignment="Left"
+                                            VerticalAlignment="Center"
+                                            Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                                            Text="Passwort:" />
+                                        <TextBox
+                                            Grid.Row="2"
+                                            Grid.Column="1"
+                                            Margin="10,5,0,5"
+                                            HorizontalAlignment="Stretch"
+                                            Style="{StaticResource MaterialDesignTextBoxBase}"
+                                            Text="{Binding SelectedUser.Password}" />
+                                        <!--  Zeile 3  -->
+                                        <TextBlock
+                                            Grid.Row="3"
+                                            Grid.Column="0"
+                                            HorizontalAlignment="Left"
+                                            VerticalAlignment="Center"
+                                            Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                                            Text="Telefonummer:" />
+                                        <TextBox
+                                            Grid.Row="3"
+                                            Grid.Column="1"
+                                            Margin="10,5,0,5"
+                                            HorizontalAlignment="Stretch"
+                                            Style="{StaticResource MaterialDesignTextBoxBase}"
+                                            Text="{Binding SelectedUser.PhoneNumber}" />
+                                    </Grid>
+                                </GroupBox>
+                            </StackPanel>
+                        </Grid>
+                    </GroupBox>
+                    <GroupBox
+                        Grid.Row="1"
+                        Margin="10,5,10,10"
+                        FontSize="12"
+                        Header="Sensorenverwaltung"
+                        Style="{StaticResource MaterialDesignGroupBox}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid Grid.Column="0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <Grid Grid.Row="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <Button
+                                        Grid.Column="0"
+                                        Height="25"
+                                        Margin="0,0,10,0"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Top"
+                                        Content="Sensor löschen"
+                                        FontSize="10"
+                                        FontWeight="Normal"
+                                        Style="{StaticResource MaterialDesignRaisedButton}" />
+                                    <Button
+                                        Grid.Column="1"
+                                        Height="25"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Top"
+                                        Content="Sensor hinzufügen"
+                                        FontSize="10"
+                                        FontWeight="Normal"
+                                        Style="{StaticResource MaterialDesignRaisedButton}" />
+                                </Grid>
+                                <DataGrid
+                                    Grid.Row="1"
+                                    Margin="0,10,0,0"
+                                    AutoGenerateColumns="False"
+                                    IsReadOnly="True"
+                                    ItemsSource="{Binding Sensors}"
+                                    SelectedItem="{Binding SelectedSensor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    Style="{StaticResource MaterialDesignDataGrid}">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Binding="{Binding SensorNumber}" Header="SensorNumber" />
+                                        <DataGridTextColumn Binding="{Binding ServerRack}" Header="ServerRack" />
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Grid>
+                            <GroupBox
+                                Grid.Column="1"
+                                Margin="10,0,0,0"
+                                FontSize="11"
+                                Header="Sensordetailansicht">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <!--  Zeile 0  -->
+                                    <TextBlock
+                                        Grid.Row="0"
+                                        Grid.Column="0"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                                        Text="Adresse:" />
+                                    <TextBox
+                                        Grid.Row="0"
+                                        Grid.Column="1"
+                                        Margin="10,5,0,5"
+                                        HorizontalAlignment="Stretch"
+                                        Style="{StaticResource MaterialDesignTextBoxBase}"
+                                        Text="{Binding SelectedSensor.Address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <!--  Zeile 1  -->
+                                    <TextBlock
+                                        Grid.Row="1"
+                                        Grid.Column="0"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                                        Text="Max-Temperatur::" />
+                                    <TextBox
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        Margin="10,5,0,5"
+                                        HorizontalAlignment="Stretch"
+                                        Style="{StaticResource MaterialDesignTextBoxBase}"
+                                        Text="{Binding SelectedSensor.MaxTemp, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <!--  Zeile 2  -->
+                                    <TextBlock
+                                        Grid.Row="2"
+                                        Grid.Column="0"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                                        Text="Serverschrank:" />
+                                    <TextBox
+                                        Grid.Row="2"
+                                        Grid.Column="1"
+                                        Margin="10,5,0,5"
+                                        HorizontalAlignment="Stretch"
+                                        Style="{StaticResource MaterialDesignTextBoxBase}"
+                                        Text="{Binding SelectedSensor.ServerRack, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <!--  Zeile 3  -->
+                                    <TextBlock
+                                        Grid.Row="3"
+                                        Grid.Column="0"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                                        Text="Herstellername:" />
+                                    <TextBox
+                                        Grid.Row="3"
+                                        Grid.Column="1"
+                                        Margin="10,5,0,5"
+                                        HorizontalAlignment="Stretch"
+                                        Style="{StaticResource MaterialDesignTextBoxBase}"
+                                        Text="{Binding ManufacturerName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <!--  Zeile 4  -->
+                                    <TextBlock
+                                        Grid.Row="4"
+                                        Grid.Column="0"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                                        Text="Herstelleradresse:" />
+                                    <TextBox
+                                        Grid.Row="4"
+                                        Grid.Column="1"
+                                        Margin="10,5,0,5"
+                                        HorizontalAlignment="Stretch"
+                                        Style="{StaticResource MaterialDesignTextBoxBase}"
+                                        Text="{Binding ManufacturerAddress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <!--  Zeile 5  -->
+                                    <TextBlock
+                                        Grid.Row="5"
+                                        Grid.Column="0"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                                        Text="Telefonnummer:" />
+                                    <TextBox
+                                        Grid.Row="5"
+                                        Grid.Column="1"
+                                        Margin="10,5,0,5"
+                                        HorizontalAlignment="Stretch"
+                                        Style="{StaticResource MaterialDesignTextBoxBase}"
+                                        Text="{Binding ManufacturerPhone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                </Grid>
+                            </GroupBox>
+                        </Grid>
+                    </GroupBox>
+                </Grid>
+            </materialDesign:Card>
+            <materialDesign:Card Grid.Column="2" Margin="0,10,0,0">
+                <GroupBox
+                    Grid.Row="1"
+                    Margin="10,10,10,10"
+                    FontSize="12"
+                    Header="Sensor-Log"
+                    Style="{StaticResource MaterialDesignGroupBox}" />
+            </materialDesign:Card>
+        </Grid>
+    </Grid>
+</Window>
