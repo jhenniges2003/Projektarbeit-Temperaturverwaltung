@@ -27,9 +27,21 @@ Route::get('dashboard', function () {
             return [$item->sensorNr => $latestTemperature];
         });
 
+    $criticalTemperatures = \Illuminate\Support\Facades\DB::table('sensors')
+        ->join('temperatures', 'sensors.sensorNr', '=', 'temperatures.sensorNr')
+        ->whereIn('temperatures.time', function($query) {
+            $query->select(\Illuminate\Support\Facades\DB::raw('MAX(time)'))
+                ->from('temperatures')
+                ->groupBy('sensorNr');
+        })
+        ->whereRaw('temperatures.temperatureValue >= sensors.maxTemp')
+        ->select('sensors.*', 'temperatures.temperatureValue')
+        ->get();
+
     return view('dashboard', [
         'sensors' => $sensors,
-        'temperatures' => $temperatures
+        'temperatures' => $temperatures,
+        'criticalTemperatures' => $criticalTemperatures
     ]);
 })
     ->middleware(['auth', 'verified'])
