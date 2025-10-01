@@ -8,7 +8,30 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
-Route::view('dashboard', 'dashboard')
+/*Route::view('dashboard', 'dashboard')
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');*/
+
+Route::get('dashboard', function () {
+    $sensors = \Illuminate\Support\Facades\DB::table('sensors')->get();
+
+    $temperatures = \Illuminate\Support\Facades\DB::table('temperatures')
+        ->select('sensorNr', \Illuminate\Support\Facades\DB::raw('MAX(time) as latest_time'))
+        ->groupBy('sensorNr')
+        ->get()
+        ->mapWithKeys(function ($item) {
+            $latestTemperature = \Illuminate\Support\Facades\DB::table('temperatures')
+                ->where('sensorNr', $item->sensorNr)
+                ->where('time', $item->latest_time)
+                ->first();
+            return [$item->sensorNr => $latestTemperature];
+        });
+
+    return view('dashboard', [
+        'sensors' => $sensors,
+        'temperatures' => $temperatures
+    ]);
+})
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
