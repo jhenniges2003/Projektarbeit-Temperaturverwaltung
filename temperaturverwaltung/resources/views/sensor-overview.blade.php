@@ -63,14 +63,6 @@
                 <div class="mx-5">
                     <!-- Foreach durchgehen Sensoren-->
                     <ul class="table-custom">
-                        <!--<li class="flex justify-between items-center border border-b-0 rounded-t-xl border-neutral-200 dark:border-neutral-700 p-2">
-                            <div>
-                                12:00 Uhr
-                            </div>
-                            <div>
-                                <div>23°C</div>
-                            </div>
-                        </li>-->
                         @foreach($temperatures as $temperature)
                             <li class="flex justify-between border border-b-0 border-neutral-200 dark:border-neutral-700 p-2">
                                 <div>
@@ -81,14 +73,6 @@
                                 </div>
                             </li>
                         @endforeach
-                        <!--<li class="flex justify-between border rounded-b-xl border-neutral-200 dark:border-neutral-700 p-2">
-                            <div>
-                                13:00 Uhr
-                            </div>
-                            <div>
-                                <div>23°C</div>
-                            </div>
-                        </li>-->
                     </ul>
                 </div>
             </div>
