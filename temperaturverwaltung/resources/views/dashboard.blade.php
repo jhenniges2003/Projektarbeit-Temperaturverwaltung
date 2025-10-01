@@ -8,43 +8,25 @@
                 <h2>Sensorübersicht</h2>
                 <div class="mx-5">
                     <!-- Foreach durchgehen Sensoren-->
-                    <ul>
-                        <li class="flex justify-between border border-b-0 rounded-t-xl border-neutral-200 dark:border-neutral-700 p-2">
-                            <div>
+                    <ul class="table-custom">
+                        @foreach ($sensors as $sensor)
+                            <li class="flex justify-between border border-b-0 border-neutral-200 dark:border-neutral-700 p-2">
                                 <div>
-                                    Sonsor 1
+                                    <div>
+                                        <span>Sonsor:</span> {{ $sensor->sensorNr}}
+                                    </div>
+                                    <div>
+                                        <span class="font-bold">Seververschrank:</span> {{$sensor->serverRack}}
+                                    </div>
                                 </div>
-                                <div>Seververschrank:</div>
-                            </div>
-                            <div>
-                                <div>Wert: 23°C</div>
-                                <div>Letzte Aktualisierung: 10min</div>
-                            </div>
-                        </li>
-                        <li class="flex justify-between border border-b-0 border-neutral-200 dark:border-neutral-700 p-2">
-                            <div>
                                 <div>
-                                    Sonsor 2
+                                    <div>
+                                        <span class="font-bold">Wert:</span> {{$temperatures[$sensor->sensorNr]->temperatureValue ?? 'N/A'}} °C
+                                    </div>
+                                    <div>Letzte Aktualisierung: 10min</div>
                                 </div>
-                                <div>Seververschrank:</div>
-                            </div>
-                            <div>
-                                <div>Wert: 23°C</div>
-                                <div>Letzte Aktualisierung: 10min</div>
-                            </div>
-                        </li>
-                        <li class="flex justify-between border rounded-b-xl border-neutral-200 dark:border-neutral-700 p-2">
-                            <div>
-                                <div>
-                                    Sonsor 1
-                                </div>
-                                <div>Seververschrank:</div>
-                            </div>
-                            <div>
-                                <div>Wert: 23°C</div>
-                                <div>Letzte Aktualisierung: 10min</div>
-                            </div>
-                        </li>
+                            </li>
+                        @endforeach
                     </ul>
                 </div>
             </div>
