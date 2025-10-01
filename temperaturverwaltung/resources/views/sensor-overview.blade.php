@@ -62,31 +62,33 @@
                 <h2>10 letzten Temperaturen</h2>
                 <div class="mx-5">
                     <!-- Foreach durchgehen Sensoren-->
-                    <ul>
-                        <li class="flex justify-between items-center border border-b-0 rounded-t-xl border-neutral-200 dark:border-neutral-700 p-2">
+                    <ul class="table-custom">
+                        <!--<li class="flex justify-between items-center border border-b-0 rounded-t-xl border-neutral-200 dark:border-neutral-700 p-2">
                             <div>
                                 12:00 Uhr
                             </div>
                             <div>
                                 <div>23°C</div>
                             </div>
-                        </li>
-                        <li class="flex justify-between border border-b-0 border-neutral-200 dark:border-neutral-700 p-2">
-                            <div>
-                                12:30 Uhr
-                            </div>
-                            <div>
-                                <div>23°C</div>
-                            </div>
-                        </li>
-                        <li class="flex justify-between border rounded-b-xl border-neutral-200 dark:border-neutral-700 p-2">
+                        </li>-->
+                        @foreach($temperatures as $temperature)
+                            <li class="flex justify-between border border-b-0 border-neutral-200 dark:border-neutral-700 p-2">
+                                <div>
+                                    {{ \Carbon\Carbon::parse($temperature->time)->format('H:i') }} Uhr
+                                </div>
+                                <div>
+                                    <div>{{$temperature->temperatureValue}} °C</div>
+                                </div>
+                            </li>
+                        @endforeach
+                        <!--<li class="flex justify-between border rounded-b-xl border-neutral-200 dark:border-neutral-700 p-2">
                             <div>
                                 13:00 Uhr
                             </div>
                             <div>
                                 <div>23°C</div>
                             </div>
-                        </li>
+                        </li>-->
                     </ul>
                 </div>
             </div>

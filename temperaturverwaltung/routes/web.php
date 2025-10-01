@@ -21,11 +21,13 @@ Route::get('sensors/{sensorNr}', function ($sensorNr) {
         ->where('manufacturerId', $sensor->manufacturerId)
         ->first();
 
-    $averageTemperature = \Illuminate\Support\Facades\DB::table('temperatures')
+    $temperature = \Illuminate\Support\Facades\DB::table('temperatures')
         ->where('sensorNr', $sensorNr)
-        ->orderBy('created_at', 'desc')
+        ->orderBy('time', 'desc')
         ->limit(10)
-        ->avg('temperatureValue');
+        ->get();
+
+    $averageTemperature = $temperature->avg('temperatureValue');
 
     if (!$sensor) {
         abort(404);
@@ -34,6 +36,7 @@ Route::get('sensors/{sensorNr}', function ($sensorNr) {
     return view('sensor-overview', [
         'sensor' => $sensor,
         'manufacturer' => $manufacturer,
+        'temperatures' => $temperature,
         'averageTemperature' => $averageTemperature
         ]
     );
