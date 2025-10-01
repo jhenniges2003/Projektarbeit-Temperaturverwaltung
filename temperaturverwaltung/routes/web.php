@@ -12,9 +12,39 @@ Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
-Route::view('sensors', 'sensor-overview')
+Route::get('sensors/{sensorNr}', function ($sensorNr) {
+    $sensor = \Illuminate\Support\Facades\DB::table('sensors')
+        ->where('sensorNr', $sensorNr)
+        ->first();
+
+    $manufacturer = \Illuminate\Support\Facades\DB::table('manufacturers')
+        ->where('manufacturerId', $sensor->manufacturerId)
+        ->first();
+
+    $averageTemperature = \Illuminate\Support\Facades\DB::table('temperatures')
+        ->where('sensorNr', $sensorNr)
+        ->orderBy('created_at', 'desc')
+        ->limit(10)
+        ->avg('temperatureValue');
+
+    if (!$sensor) {
+        abort(404);
+    }
+
+    return view('sensor-overview', [
+        'sensor' => $sensor,
+        'manufacturer' => $manufacturer,
+        'averageTemperature' => $averageTemperature
+        ]
+    );
+})
     ->middleware(['auth', 'verified'])
     ->name('sensors');
+
+
+
+
+
 
 Route::middleware(['auth'])->group(function () {
     Route::redirect('settings', 'settings/profile');

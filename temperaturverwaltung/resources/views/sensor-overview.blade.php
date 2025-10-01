@@ -1,7 +1,7 @@
 <x-layouts.app :title="__('Sensorübersicht')">
     <div class="mb-6">
         <!-- Id Dynamisieren -->
-        <h1>Sensor: </h1>
+        <h1>Sensor: {{$sensor->sensorNr}} </h1>
     </div>
     <div class="flex h-full w-full flex-1 flex-col gap-4 rounded-xl">
         <div class="w-full grid auto-rows-min gap-4 md:grid-cols-2 border border-color rounded-xl">
@@ -9,18 +9,24 @@
                 <h2>Sensor Informationen</h2>
                 <div class="border border-color rounded-xl m-5 p-5">
                     <div>
-                        <div>
-                            Durchschnittstemperatur:
-                        </div>
-                        <div>
-                            Maximaltemperatur:
-                        </div>
-                        <div>
-                            Addresse:
-                        </div>
-                        <div>
-                            Serverschrank:
-                        </div>
+                        <table class="table-auto w-3/4 text-left">
+                            <tr>
+                                <td class="font-bold">Durchschnittstemperatur:</td>
+                                <td>{{$averageTemperature}} °C</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">Maximaltemperatur:</td>
+                                <td>{{$sensor->maxTemp}}</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">Addresse:</td>
+                                <td>{{$sensor->address}}</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">Serverschrank:</td>
+                                <td>{{$sensor->serverRack}}</td>
+                            </tr>
+                        </table>
                     </div>
 
                 </div>
@@ -29,18 +35,24 @@
                 <h2>Hersteller Informationen</h2>
                 <div class="border border-color rounded-xl m-5 p-5">
                     <div>
-                        <div>
-                            Durchschnittstemperatur:
-                        </div>
-                        <div>
-                            Maximaltemperatur:
-                        </div>
-                        <div>
-                            Addresse:
-                        </div>
-                        <div>
-                            Serverschrank:
-                        </div>
+                        <table class="table-auto w-3/4 text-left">
+                            <tr>
+                                <td class="font-bold">ID:</td>
+                                <td>{{$manufacturer->manufacturerId}}</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">Name:</td>
+                                <td>{{$manufacturer->manufacturerName}}</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">Addresse:</td>
+                                <td>{{$manufacturer->address}}</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">Telefonnummer:</td>
+                                <td>{{$manufacturer->phoneNumber}}</td>
+                            </tr>
+                        </table>
                     </div>
                 </div>
             </div>
