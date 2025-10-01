@@ -7,13 +7,12 @@
             <div class="relative aspect-video rounded-xl border border-neutral-200 dark:border-neutral-700">
                 <h2>Sensorübersicht</h2>
                 <div class="mx-5">
-                    <!-- Foreach durchgehen Sensoren-->
                     <ul class="table-custom">
                         @foreach ($sensors as $sensor)
                             <li class="flex justify-between border border-b-0 border-neutral-200 dark:border-neutral-700 p-2">
                                 <div>
                                     <div>
-                                        <span>Sonsor:</span> {{ $sensor->sensorNr}}
+                                        <span class="font-bold">Sonsor:</span> {{ $sensor->sensorNr}}
                                     </div>
                                     <div>
                                         <span class="font-bold">Seververschrank:</span> {{$sensor->serverRack}}
@@ -36,43 +35,27 @@
                     <h2>kritische Sensoren</h2>
                     <div class="mx-5 mb-5">
                         <!-- Foreach durchgehen kritische Sensoren -> Max Temp. Dynamisch-->
-                        <ul>
-                            <li class="flex justify-between border border-b-0 border-color-kritisch rounded-t-xl p-2">
-                                <div>
+                        <ul class="table-custom-critical">
+                            @foreach($criticalTemperatures as $criticalTemperature)
+                                <li>
                                     <div>
-                                        Sonsor 1
+                                        <div>
+                                            <span class="font-bold">Sensor:</span> {{ $criticalTemperature->sensorNr }}
+                                        </div>
+                                        <div>
+                                            <span class="font-bold">Seververschrank:</span> {{$criticalTemperature->serverRack}}
+                                        </div>
                                     </div>
-                                    <div>Seververschrank:</div>
-                                </div>
-                                <div>
-                                    <div>Wert: 23°C</div>
-                                    <div>Letzte Aktualisierung: 10min</div>
-                                </div>
-                            </li>
-                            <li class="flex justify-between border border-b-0 border-color-kritisch p-2">
-                                <div>
                                     <div>
-                                        Sonsor 2
+                                        <div>
+                                            <span class="font-bold">Wert:</span> {{$criticalTemperature->temperatureValue}} °C
+                                        </div>
+
+                                        <!-- TODO: Soll dies noch mit rein? -->
+                                        <div>Letzte Aktualisierung: 10min</div>
                                     </div>
-                                    <div>Seververschrank:</div>
-                                </div>
-                                <div>
-                                    <div>Wert: 23°C</div>
-                                    <div>Letzte Aktualisierung: 10min</div>
-                                </div>
-                            </li>
-                            <li class="flex justify-between border rounded-b-xl border-color-kritisch p-2">
-                                <div>
-                                    <div>
-                                        Sonsor 1
-                                    </div>
-                                    <div>Seververschrank:</div>
-                                </div>
-                                <div>
-                                    <div>Wert: 23°C</div>
-                                    <div>Letzte Aktualisierung: 10min</div>
-                                </div>
-                            </li>
+                                </li>
+                            @endforeach
                         </ul>
                     </div>
                 </div>
