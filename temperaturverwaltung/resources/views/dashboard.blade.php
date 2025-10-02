@@ -39,23 +39,25 @@
                         <!-- Foreach durchgehen kritische Sensoren -> Max Temp. Dynamisch-->
                         <ul class="table-custom-critical">
                             @foreach($criticalTemperatures as $criticalTemperature)
-                                <li>
-                                    <div>
+                                <a href="{{ route('sensors', $criticalTemperature->sensorNr) }}">
+                                    <li>
                                         <div>
-                                            <span class="font-bold">Sensor:</span> {{ $criticalTemperature->sensorNr }}
+                                            <div>
+                                                <span class="font-bold">Sensor:</span> {{ $criticalTemperature->sensorNr }}
+                                            </div>
+                                            <div>
+                                                <span class="font-bold">Seververschrank:</span> {{$criticalTemperature->serverRack}}
+                                            </div>
                                         </div>
                                         <div>
-                                            <span class="font-bold">Seververschrank:</span> {{$criticalTemperature->serverRack}}
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div>
-                                            <span class="font-bold">Wert:</span> {{$criticalTemperature->temperatureValue}} °C
-                                        </div>
+                                            <div>
+                                                <span class="font-bold">Wert:</span> {{$criticalTemperature->temperatureValue}} °C
+                                            </div>
 
-                                        <div>Letzte Aktualisierung: {{ isset($criticalTemperature->time) ? \Carbon\Carbon::parse($criticalTemperature->time)->diffForHumans() : 'N/A' }}</div>
-                                    </div>
-                                </li>
+                                            <div>Letzte Aktualisierung: {{ isset($criticalTemperature->time) ? \Carbon\Carbon::parse($criticalTemperature->time)->diffForHumans() : 'N/A' }}</div>
+                                        </div>
+                                    </li>
+                                </a>
                             @endforeach
                         </ul>
                     </div>

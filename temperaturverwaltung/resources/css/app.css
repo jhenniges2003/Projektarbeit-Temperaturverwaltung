@@ -93,6 +93,18 @@ select:focus[data-flux-control] {
     @apply flex justify-between border border-b-0 border-neutral-200 dark:border-neutral-700 p-2;
 }
 
+.table-custom-critical > a:first-child li{
+    @apply flex justify-between border border-b-0 border-red-900 bg-red-500 text-white rounded-t-xl p-2;
+}
+
+.table-custom-critical li{
+    @apply flex justify-between border border-b-0 border-red-900 bg-red-500 text-white p-2
+}
+
+.table-custom-critical > a:last-child li{
+    @apply flex justify-between border rounded-b-xl border-red-900 bg-red-500 text-white p-2;
+}
+
 /* Sensor-Overview */
 
 .table-custom li:first-child {
@@ -101,17 +113,4 @@ select:focus[data-flux-control] {
 
 .table-custom li:last-child{
     @apply flex justify-between border rounded-b-xl border-neutral-200 dark:border-neutral-700 p-2;
-}
-
-
-.table-custom-critical li:first-child{
-    @apply flex justify-between border border-b-0 border-red-900 bg-red-500 text-white rounded-t-xl p-2;
-}
-
-.table-custom-critical li{
-    @apply flex justify-between border border-b-0 border-red-900 bg-red-500 text-white p-2
-}
-
-.table-custom-critical li:last-child{
-    @apply flex justify-between border rounded-b-xl border-red-900 bg-red-500 text-white p-2;
 }
