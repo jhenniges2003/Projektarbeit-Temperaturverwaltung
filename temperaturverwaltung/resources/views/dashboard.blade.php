@@ -9,22 +9,24 @@
                 <div class="mx-5">
                     <ul class="table-custom">
                         @foreach ($sensors as $sensor)
-                            <li class="flex justify-between border border-b-0 border-neutral-200 dark:border-neutral-700 p-2">
-                                <div>
+                            <a href="{{ route('sensors', $sensor->sensorNr) }}">
+                                <li>
                                     <div>
-                                        <span class="font-bold">Sonsor:</span> {{ $sensor->sensorNr}}
+                                        <div>
+                                            <span class="font-bold">Sonsor:</span> {{ $sensor->sensorNr}}
+                                        </div>
+                                        <div>
+                                            <span class="font-bold">Seververschrank:</span> {{$sensor->serverRack}}
+                                        </div>
                                     </div>
                                     <div>
-                                        <span class="font-bold">Seververschrank:</span> {{$sensor->serverRack}}
+                                        <div>
+                                            <span class="font-bold">Wert:</span> {{$temperatures[$sensor->sensorNr]->temperatureValue ?? 'N/A'}} °C
+                                        </div>
+                                        <div>Letzte Aktualisierung: {{ isset($temperatures[$sensor->sensorNr]->time) ? \Carbon\Carbon::parse($temperatures[$sensor->sensorNr]->time)->diffForHumans() : 'N/A' }}</div>
                                     </div>
-                                </div>
-                                <div>
-                                    <div>
-                                        <span class="font-bold">Wert:</span> {{$temperatures[$sensor->sensorNr]->temperatureValue ?? 'N/A'}} °C
-                                    </div>
-                                    <div>Letzte Aktualisierung: {{ isset($temperatures[$sensor->sensorNr]->time) ? \Carbon\Carbon::parse($temperatures[$sensor->sensorNr]->time)->diffForHumans() : 'N/A' }}</div>
-                                </div>
-                            </li>
+                                </li>
+                            </a>
                         @endforeach
                     </ul>
                 </div>
@@ -51,7 +53,6 @@
                                             <span class="font-bold">Wert:</span> {{$criticalTemperature->temperatureValue}} °C
                                         </div>
 
-                                        <!-- TODO: Soll dies noch mit rein? -->
                                         <div>Letzte Aktualisierung: {{ isset($criticalTemperature->time) ? \Carbon\Carbon::parse($criticalTemperature->time)->diffForHumans() : 'N/A' }}</div>
                                     </div>
                                 </li>
