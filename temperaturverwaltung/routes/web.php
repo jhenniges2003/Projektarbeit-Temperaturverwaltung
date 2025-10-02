@@ -35,9 +35,8 @@ Route::get('dashboard', function () {
                 ->groupBy('sensorNr');
         })
         ->whereRaw('temperatures.temperatureValue >= sensors.maxTemp')
-        ->select('sensors.*', 'temperatures.temperatureValue')
+        ->select('sensors.*', 'temperatures.temperatureValue', 'temperatures.time')
         ->get();
-
     return view('dashboard', [
         'sensors' => $sensors,
         'temperatures' => $temperatures,
