@@ -107,10 +107,10 @@ select:focus[data-flux-control] {
 
 /* Sensor-Overview */
 
-.table-custom li:first-child {
+.table-custom-overview li:first-child {
     @apply flex justify-between items-center border border-b-0 rounded-t-xl border-neutral-200 dark:border-neutral-700 p-2;
 }
 
-.table-custom li:last-child{
+.table-custom-overview li:last-child{
     @apply flex justify-between border rounded-b-xl border-neutral-200 dark:border-neutral-700 p-2;
 }
