@@ -5,46 +5,29 @@
     <div class="flex h-full w-full flex-1 flex-col gap-4 rounded-xl">
         <div class="grid auto-rows-min gap-4 md:grid-cols-2">
             <div class="relative aspect-video rounded-xl border border-neutral-200 dark:border-neutral-700">
-                <h2>Sensorübersicht</h2>
+                <h2>Sensorenübersicht</h2>
                 <div class="mx-5">
-                    <!-- Foreach durchgehen Sensoren-->
-                    <ul>
-                        <li class="flex justify-between border border-b-0 rounded-t-xl border-neutral-200 dark:border-neutral-700 p-2">
-                            <div>
-                                <div>
-                                    Sonsor 1
-                                </div>
-                                <div>Seververschrank:</div>
-                            </div>
-                            <div>
-                                <div>Wert: 23°C</div>
-                                <div>Letzte Aktualisierung: 10min</div>
-                            </div>
-                        </li>
-                        <li class="flex justify-between border border-b-0 border-neutral-200 dark:border-neutral-700 p-2">
-                            <div>
-                                <div>
-                                    Sonsor 2
-                                </div>
-                                <div>Seververschrank:</div>
-                            </div>
-                            <div>
-                                <div>Wert: 23°C</div>
-                                <div>Letzte Aktualisierung: 10min</div>
-                            </div>
-                        </li>
-                        <li class="flex justify-between border rounded-b-xl border-neutral-200 dark:border-neutral-700 p-2">
-                            <div>
-                                <div>
-                                    Sonsor 1
-                                </div>
-                                <div>Seververschrank:</div>
-                            </div>
-                            <div>
-                                <div>Wert: 23°C</div>
-                                <div>Letzte Aktualisierung: 10min</div>
-                            </div>
-                        </li>
+                    <ul class="table-custom">
+                        @foreach ($sensors as $sensor)
+                            <a href="{{ route('sensors', $sensor->sensorNr) }}">
+                                <li>
+                                    <div>
+                                        <div>
+                                            <span class="font-bold">Sonsor:</span> {{ $sensor->sensorNr}}
+                                        </div>
+                                        <div>
+                                            <span class="font-bold">Seververschrank:</span> {{$sensor->serverRack}}
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div>
+                                            <span class="font-bold">Wert:</span> {{$temperatures[$sensor->sensorNr]->temperatureValue ?? 'N/A'}} °C
+                                        </div>
+                                        <div>Letzte Aktualisierung: {{ isset($temperatures[$sensor->sensorNr]->time) ? \Carbon\Carbon::parse($temperatures[$sensor->sensorNr]->time)->diffForHumans() : 'N/A' }}</div>
+                                    </div>
+                                </li>
+                            </a>
+                        @endforeach
                     </ul>
                 </div>
             </div>
@@ -54,43 +37,28 @@
                     <h2>kritische Sensoren</h2>
                     <div class="mx-5 mb-5">
                         <!-- Foreach durchgehen kritische Sensoren -> Max Temp. Dynamisch-->
-                        <ul>
-                            <li class="flex justify-between border border-b-0 border-color-kritisch rounded-t-xl p-2">
-                                <div>
-                                    <div>
-                                        Sonsor 1
-                                    </div>
-                                    <div>Seververschrank:</div>
-                                </div>
-                                <div>
-                                    <div>Wert: 23°C</div>
-                                    <div>Letzte Aktualisierung: 10min</div>
-                                </div>
-                            </li>
-                            <li class="flex justify-between border border-b-0 border-color-kritisch p-2">
-                                <div>
-                                    <div>
-                                        Sonsor 2
-                                    </div>
-                                    <div>Seververschrank:</div>
-                                </div>
-                                <div>
-                                    <div>Wert: 23°C</div>
-                                    <div>Letzte Aktualisierung: 10min</div>
-                                </div>
-                            </li>
-                            <li class="flex justify-between border rounded-b-xl border-color-kritisch p-2">
-                                <div>
-                                    <div>
-                                        Sonsor 1
-                                    </div>
-                                    <div>Seververschrank:</div>
-                                </div>
-                                <div>
-                                    <div>Wert: 23°C</div>
-                                    <div>Letzte Aktualisierung: 10min</div>
-                                </div>
-                            </li>
+                        <ul class="table-custom-critical">
+                            @foreach($criticalTemperatures as $criticalTemperature)
+                                <a href="{{ route('sensors', $criticalTemperature->sensorNr) }}">
+                                    <li>
+                                        <div>
+                                            <div>
+                                                <span class="font-bold">Sensor:</span> {{ $criticalTemperature->sensorNr }}
+                                            </div>
+                                            <div>
+                                                <span class="font-bold">Seververschrank:</span> {{$criticalTemperature->serverRack}}
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div>
+                                                <span class="font-bold">Wert:</span> {{$criticalTemperature->temperatureValue}} °C
+                                            </div>
+
+                                            <div>Letzte Aktualisierung: {{ isset($criticalTemperature->time) ? \Carbon\Carbon::parse($criticalTemperature->time)->diffForHumans() : 'N/A' }}</div>
+                                        </div>
+                                    </li>
+                                </a>
+                            @endforeach
                         </ul>
                     </div>
                 </div>

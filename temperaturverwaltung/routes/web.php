@@ -4,17 +4,93 @@ use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 use Livewire\Volt\Volt;
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
 
-Route::view('dashboard', 'dashboard')
+Route::get('/', function () {
+    $sensors = \Illuminate\Support\Facades\DB::table('sensors')->get();
+
+    $temperatures = \Illuminate\Support\Facades\DB::table('temperatures')
+        ->select('sensorNr', \Illuminate\Support\Facades\DB::raw('MAX(time) as latest_time'))
+        ->groupBy('sensorNr')
+        ->get()
+        ->mapWithKeys(function ($item) {
+            $latestTemperature = \Illuminate\Support\Facades\DB::table('temperatures')
+                ->where('sensorNr', $item->sensorNr)
+                ->where('time', $item->latest_time)
+                ->first();
+            return [$item->sensorNr => $latestTemperature];
+        });
+
+    $criticalTemperatures = \Illuminate\Support\Facades\DB::table('sensors')
+        ->join('temperatures', 'sensors.sensorNr', '=', 'temperatures.sensorNr')
+        ->whereIn('temperatures.time', function($query) {
+            $query->select(\Illuminate\Support\Facades\DB::raw('MAX(time)'))
+                ->from('temperatures')
+                ->groupBy('sensorNr');
+        })
+        ->whereRaw('temperatures.temperatureValue >= sensors.maxTemp')
+        ->select('sensors.*', 'temperatures.temperatureValue', 'temperatures.time')
+        ->get();
+    return view('dashboard', [
+        'sensors' => $sensors,
+        'temperatures' => $temperatures,
+        'criticalTemperatures' => $criticalTemperatures
+    ]);
+})
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
-Route::view('sensors', 'sensor-overview')
+Route::get('sensors/{sensorNr}', function ($sensorNr) {
+    $sensor = \Illuminate\Support\Facades\DB::table('sensors')
+        ->where('sensorNr', $sensorNr)
+        ->first();
+
+    $manufacturer = \Illuminate\Support\Facades\DB::table('manufacturers')
+        ->where('manufacturerId', $sensor->manufacturerId)
+        ->first();
+
+    $temperature = \Illuminate\Support\Facades\DB::table('temperatures')
+        ->where('sensorNr', $sensorNr)
+        ->orderBy('time', 'desc')
+        ->limit(10)
+        ->get();
+
+    $averageTemperature = number_format($temperature->avg('temperatureValue'), 2);
+
+
+    if (!$sensor) {
+        abort(404);
+    }
+
+    return view('sensor-overview', [
+        'sensor' => $sensor,
+        'manufacturer' => $manufacturer,
+        'temperatures' => $temperature,
+        'averageTemperature' => $averageTemperature
+        ]
+    );
+})
     ->middleware(['auth', 'verified'])
     ->name('sensors');
+
+Route::put('sensors/{sensorNr}/max-temp', function (Request $request, $sensorNr) {
+    $validated = $request->validate([
+        'maxTemp' => 'required|numeric',
+    ]);
+
+    \Illuminate\Support\Facades\DB::table('sensors')
+        ->where('sensorNr', $sensorNr)
+        ->update(['maxTemp' => $validated['maxTemp']]);
+
+    return redirect()->back()->with('success', 'Maximaltemperatur wurde erfolgreich aktualisiert.');
+})
+    ->middleware(['auth', 'verified'])
+    ->name('sensors.update-max-temp');
+
+
+
+
+
+
 
 Route::middleware(['auth'])->group(function () {
     Route::redirect('settings', 'settings/profile');
