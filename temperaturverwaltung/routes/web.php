@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 use Laravel\Fortify\Features;
 use Livewire\Volt\Volt;
 
@@ -77,6 +78,21 @@ Route::get('sensors/{sensorNr}', function ($sensorNr) {
 })
     ->middleware(['auth', 'verified'])
     ->name('sensors');
+
+Route::put('sensors/{sensorNr}/max-temp', function (Request $request, $sensorNr) {
+    $validated = $request->validate([
+        'maxTemp' => 'required|numeric',
+    ]);
+
+    \Illuminate\Support\Facades\DB::table('sensors')
+        ->where('sensorNr', $sensorNr)
+        ->update(['maxTemp' => $validated['maxTemp']]);
+
+    return redirect()->back()->with('success', 'Maximaltemperatur wurde erfolgreich aktualisiert.');
+})
+    ->middleware(['auth', 'verified'])
+    ->name('sensors.update-max-temp');
+
 
 
 
