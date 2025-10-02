@@ -62,7 +62,8 @@ Route::get('sensors/{sensorNr}', function ($sensorNr) {
         ->limit(10)
         ->get();
 
-    $averageTemperature = $temperature->avg('temperatureValue');
+    $averageTemperature = number_format($temperature->avg('temperatureValue'), 2);
+
 
     if (!$sensor) {
         abort(404);
