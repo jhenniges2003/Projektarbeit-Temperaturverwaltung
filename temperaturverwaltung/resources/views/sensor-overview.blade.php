@@ -6,7 +6,7 @@
     <div class="flex h-full w-full flex-1 flex-col gap-4 rounded-xl">
         <div class="w-full grid auto-rows-min gap-4 md:grid-cols-2 border border-color rounded-xl">
             <div>
-                <h2>Sensor Informationen</h2>
+                <h2>Sensorinformationen</h2>
                 <div class="border border-color rounded-xl m-5 p-5">
                     <div>
                         <table class="table-auto w-3/4 text-left">
@@ -32,7 +32,7 @@
                 </div>
             </div>
             <div>
-                <h2>Hersteller Informationen</h2>
+                <h2>Herstellerinformationen</h2>
                 <div class="border border-color rounded-xl m-5 p-5">
                     <div>
                         <table class="table-auto w-3/4 text-left">
@@ -77,7 +77,7 @@
             </div>
 
             <div class="relative aspect-video rounded-xl border border-neutral-200 dark:border-neutral-700">
-                <h2>Maximal Temperatur ändern</h2>
+                <h2>Maximaltemperatur ändern</h2>
                 <div class="border border-color rounded-xl m-5 p-5">
                     <form action="{{ route('sensors.update-max-temp', $sensor->sensorNr) }}" method="POST">
                         @csrf
