@@ -62,7 +62,7 @@
                 <h2>10 letzten Temperaturen</h2>
                 <div class="mx-5">
                     <!-- Foreach durchgehen Sensoren-->
-                    <ul class="table-custom">
+                    <ul class="table-custom-overview">
                         @foreach($temperatures as $temperature)
                             <li class="flex justify-between border border-b-0 border-neutral-200 dark:border-neutral-700 p-2">
                                 <div>
