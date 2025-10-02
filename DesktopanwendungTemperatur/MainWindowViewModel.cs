@@ -1,17 +1,71 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows.Input;
 
 namespace DesktopanwendungTemperatur
 {
     internal class MainWindowViewModel : INotifyPropertyChanged
     {
+        /// Instance of the current DatabaseContext
         public MyDbContext _db;
-        public ObservableCollection<UserModel> Users { get; set; }
+
+        /// Commands for handling events such as ButtonClickEvents
+        public ICommand AddUserCommand { get; }
+        public ICommand CancelAddUserCommand { get; }
+        public ICommand SaveAddUserCommand { get; }
+        public ICommand DeleteUserCommand { get; }
+
+
+
+
+        /// Objectifed instances of the databaseTables
+        private ObservableCollection<UserModel>? _users;
+        public ObservableCollection<UserModel>? Users
+        {
+            get => _users; set
+            {
+                if (_users != value && value != null)
+                {
+                    _users = value;
+                    OnPropertyChanged(nameof(Users));
+                }
+            }
+        }
         public ObservableCollection<ManufacturerModel> Manufacturer { get; set; }
         public ObservableCollection<SensorModel> Sensors { get; set; }
         public ObservableCollection<TemperatureModel> Temperatures { get; set; }
         public ObservableCollection<LogModel> Logs { get; set; }
 
+
+        /// helper fields for handling different appstates
+        private bool _enableUserGrid = true;
+        public bool EnableUserGrid
+        {
+            get => _enableUserGrid;
+            set
+            {
+                if (_enableUserGrid != value)
+                {
+                    _enableUserGrid = value;
+                    EnableAddButtons = !value;
+                    OnPropertyChanged(nameof(EnableUserGrid));
+                }
+            }
+        }
+
+        private bool _enableAddButtons = false;
+        public bool EnableAddButtons
+        {
+            get => _enableAddButtons;
+            set
+            {
+                if (_enableAddButtons != value)
+                {
+                    _enableAddButtons = value;
+                    OnPropertyChanged(nameof(EnableAddButtons));
+                }
+            }
+        }
 
         private UserModel _selectedUser = new();
         public UserModel SelectedUser
@@ -36,6 +90,9 @@ namespace DesktopanwendungTemperatur
                 if (_selectedSensor != value && value != null)
                 {
                     _selectedSensor = value;
+                    ManufacturerName = Manufacturer.FirstOrDefault(p => p.Id == SelectedSensor.ManufacturerId)?.ManufacturerName;
+                    ManufacturerAddress = Manufacturer.FirstOrDefault(p => p.Id == SelectedSensor.ManufacturerId)?.Address;
+                    ManufacturerPhone = Manufacturer.FirstOrDefault(p => p.Id == SelectedSensor.ManufacturerId)?.PhoneNumber;
                     OnPropertyChanged(nameof(SelectedSensor));
                 }
             }
@@ -44,7 +101,7 @@ namespace DesktopanwendungTemperatur
         private string? _manufacturerName = string.Empty;
         public string? ManufacturerName
         {
-            get => _manufacturerName = Manufacturer.FirstOrDefault(p => p.Id == SelectedSensor.ManufacturerId)?.ManufacturerName;
+            get => _manufacturerName;
 
             set
             {
@@ -59,7 +116,7 @@ namespace DesktopanwendungTemperatur
         private string? _manufacturerAddress = string.Empty;
         public string? ManufacturerAddress
         {
-            get => _manufacturerAddress = Manufacturer.FirstOrDefault(p => p.Id == SelectedSensor.ManufacturerId)?.Address;
+            get => _manufacturerAddress;
 
             set
             {
@@ -86,14 +143,55 @@ namespace DesktopanwendungTemperatur
             }
         }
 
+        /// Methods
+        public void AddUser()
+        {
+            SelectedUser = new UserModel { LogInName = "", Password = "", PhoneNumber = "", UserName = "" };
+            EnableUserGrid = false;
+        }
+
+        public void SaveAddUser()
+        {
+            _db.Users.Add(SelectedUser);
+            _db.SaveChanges();
+            EnableUserGrid = true;
+            InitUserSource();
+        }
+
+
+        public void CancelAddUser()
+        {
+            SelectedUser = Users!.FirstOrDefault() ?? new UserModel();
+            EnableUserGrid = true;
+        }
+
+        public void DeleteUser()
+        {
+            if (SelectedUser != null)
+            {
+                _db.Users.Remove(SelectedUser);
+                _db.SaveChanges();
+                InitUserSource();
+            }
+        }
+
+        private void InitUserSource()
+        {
+            var userList = _db.Users.ToList();
+            Users = new ObservableCollection<UserModel>(userList);
+            SelectedUser = Users.FirstOrDefault() ?? new UserModel();
+        }
+
         public MainWindowViewModel()
         {
             _db = new MyDbContext();
 
+            AddUserCommand = new RelayCommand(AddUser, () => true);
+            CancelAddUserCommand = new RelayCommand(CancelAddUser, () => true);
+            SaveAddUserCommand = new RelayCommand(SaveAddUser, () => true);
+            DeleteUserCommand = new RelayCommand(DeleteUser, () => true);
 
-            var userList = _db.Users.ToList();
-            Users = new ObservableCollection<UserModel>(userList);
-            SelectedUser = Users.FirstOrDefault() ?? new UserModel();
+            InitUserSource();
 
             var manufacturerList = _db.Manufacturers.ToList();
             Manufacturer = new ObservableCollection<ManufacturerModel>(manufacturerList);
@@ -107,9 +205,12 @@ namespace DesktopanwendungTemperatur
             var logList = _db.Logs.ToList();
             Logs = new ObservableCollection<LogModel>(logList);
 
-            foreach (var user in Users)
+            if (Users != null)
             {
-                System.Diagnostics.Debug.WriteLine($"User: {user.UserId}, {user.UserName}, {user.Password}, {user.PhoneNumber}");
+                foreach (var user in Users)
+                {
+                    System.Diagnostics.Debug.WriteLine($"User: {user.UserId}, {user.UserName}, {user.Password}, {user.PhoneNumber}");
+                }
             }
         }
 
