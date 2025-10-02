@@ -22,7 +22,7 @@
                                     <div>
                                         <span class="font-bold">Wert:</span> {{$temperatures[$sensor->sensorNr]->temperatureValue ?? 'N/A'}} °C
                                     </div>
-                                    <div>Letzte Aktualisierung: 10min</div>
+                                    <div>Letzte Aktualisierung: {{ isset($temperatures[$sensor->sensorNr]->time) ? \Carbon\Carbon::parse($temperatures[$sensor->sensorNr]->time)->diffForHumans() : 'N/A' }}</div>
                                 </div>
                             </li>
                         @endforeach
@@ -52,7 +52,7 @@
                                         </div>
 
                                         <!-- TODO: Soll dies noch mit rein? -->
-                                        <div>Letzte Aktualisierung: 10min</div>
+                                        <div>Letzte Aktualisierung: {{ isset($criticalTemperature->time) ? \Carbon\Carbon::parse($criticalTemperature->time)->diffForHumans() : 'N/A' }}</div>
                                     </div>
                                 </li>
                             @endforeach
