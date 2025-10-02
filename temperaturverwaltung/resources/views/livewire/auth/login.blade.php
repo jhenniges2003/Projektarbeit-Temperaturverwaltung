@@ -128,11 +128,6 @@ new #[Layout('components.layouts.auth')] class extends Component {
                 viewable
             />
 
-            @if (Route::has('password.request'))
-                <flux:link class="absolute top-0 text-sm end-0" :href="route('password.request')" wire:navigate>
-                    {{ __('Forgot your password?') }}
-                </flux:link>
-            @endif
         </div>
 
         <!-- Remember Me -->
